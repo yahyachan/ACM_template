@@ -1,0 +1,62 @@
+\section{阶乘幂和斯特林数}
+\subsection{阶乘幂}
+\[x^{\underline k} = \frac{x!}{(x - k)!}\]\par
+\[x^{\overline k} = \frac{(x + k - 1)!}{(x - 1)!}\]\par
+第一个式子是不是有点亲切呢？对比一下：
+\[\binom x k = \frac{x!}{k!(x - k)!}\]
+\subsection{斯特林数}
+\subsubsection{定义}
+定义第一类斯特林数$n\brack k$表示将$n$个元素划分为$k$个环的方案数。通俗
+点说，就是有$k$个环的$1\ldots n$的排列的方案数。\par
+定义第二类斯特林数$n\brace k$表示将$n$个本质不同的物品划分为$k$个无标号
+非空集合的方案数（或者说划分成$k$）个等价类也行。\par
+多扯一句，有一个贝尔数$B_n$表示了将$n$个本质不同元素划分成若干等价类的
+方案数。
+\subsubsection{递推式}
+\[{n\brack k} = {{n - 1}\brack {k - 1}} + (n - 1){{n - 1}\brack k}\]\par
+\[{n\brace k} = {{n - 1}\brace {k - 1}} + k{(n - 1)\brace k}\]
+\subsubsection{与阶乘幂的关系}
+\[x^k = \sum_{i = 0}^k{k\brace i}x^{\underline i}
+        = \sum_{i = 0}^k(-1)^{k - i}{k\brace i}x^{\overline i}\]\par
+\[x^{\overline k} = \sum_{i = 0}^k{k\brack i}x^i\]
+\[x^{\underline k} = \sum_{i = 0}^k(-1)^{k - i}{k\brack i}x^i\]\par
+一言以蔽之，第一类是阶乘幂转幂，第二类是幂转阶乘幂，因此第二类更常用一点……
+\subsubsection{斯特林反演}
+\[{n\brace k} = \frac{1}{k!}\sum_{i = 0}^k(-1)^{k-i}\binom k ii^n\]
+\subsubsection{高效求某一行的斯特林数}
+第一类斯特林数怎么求？注意到$x^{\overline k}$就是第$k$行第一类斯特林数
+的OGF。\par
+第二类斯特林数怎么求？看上一页，然后卷积那一套东西优化。
+\subsubsection{例题}
+试推：
+\[\sum_{i = 0}^n\binom n i i^k\]\par
+把常规幂转成下降幂，有：
+\[
+\begin{aligned}
+\quad&\sum_{i = 0}^n\binom n i\sum_{j = 0}^k{k\brace j}j!\binom i j\\
+=&\sum_{j = 0}^k{k\brace j}j!\sum_{i = 0}^n\binom n i\binom i j\\
+=&\sum_{j = 0}^k{k\brace j}j!\binom n j\sum_{i = 0}^n\binom{n - j}{i - j}\\
+=&\sum_{j = 0}^k{k\brace j}j!\binom n j\sum_{i = j}^n\binom{n - j}{i - j}\\
+=&\sum_{j = 0}^k{k\brace j}j!\binom n j2^{n - j}
+\end{aligned}
+\]
+\section{差分与牛顿级数}
+\subsection{差分与高阶差分}
+\subsubsection{差分}
+\[\Delta^0f(x) = f(x)\]
+\[\Delta^kf(x) = \Delta^{k - 1}f(x + 1) - \Delta^{k - 1}f(x)\]\par
+类似于微分$\mathrm d$，差分$\Delta$是一个算子，也是可以参与运算的……
+\subsubsection{高阶差分求法}
+定义另一个算子$\mathrm Ef(x) = f(x + 1)$，然后我们发现$\Delta = \mathrm E - 1$
+，带入高阶差分得到：
+\[
+\begin{aligned}
+\Delta^kf(x) &= (E - 1)^kf(x)\\
+&= \sum_{i = 0}^k\binom k i (-1)^{n - i}E^if(x)\\
+&= \sum_{i = 0}^k\binom k i (-1)^{n - i}f(x + i)
+\end{aligned}
+\]\par
+如果$x$是固定的，那么很显然这个东西可以FFT优化吧（
+\subsection{牛顿级数}
+任何$k$次多项式$f(x)$都可以展开为组合数的形式，具体的说是：
+\[f(x) = \sum_{i = 0}^k\Delta^if(0)\binom x i\]

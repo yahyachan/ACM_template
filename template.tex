@@ -6,9 +6,11 @@
 % \usepackage[euler-digits, euler-hat-accent]{eulervm}
 % \usepackage{euler}
 \usepackage{bm}
-\usepackage{url}
+% \usepackage{url}
 \usepackage{float}
 \usepackage{graphicx}
+\usepackage{hyperref}
+
 \usepackage{sourcecodepro}
 \usepackage{listings}
 \lstset{
@@ -29,6 +31,10 @@
   \tableofcontents
 
   \mainmatter
-  
-  
+  \input{DT/main.tex}
+  \input{graph/main.tex}
+  \input{string/main.tex}
+  \input{num_thy/main.tex}
+  \input{counting/main.tex}
+
 \end{document}

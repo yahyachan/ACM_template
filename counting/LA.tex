@@ -7,3 +7,30 @@
 ，那么$Q$的任一余子式$M_{ii}$（将第$i$行与第$i$列删后的矩阵的行列
 式）即为原图生成树个数。
 
+\subsection{Lindström–Gessel–Viennot 引理}
+对于一个 DAG $G$，假定其起点集合为$A={a_1,\ldots,a_n}$，终点
+集合为$B={b_1,\ldots,b_n}$，设矩阵
+\[M=\begin{bmatrix}
+  e(a_1, b_1) & e(a_1, b_2) & \ldots & e(a_1, b_n)\\
+  e(a_2, b_1) & e(a_2, b_2) & \ldots & e(a_2, b_n)\\
+  \vdots      & \vdots      & \ddots & \vdots     \\
+  e(a_n, b_1) & e(a_n, b_2) & \ldots & e(a_n, b_n)
+\end{bmatrix}\]
+其中$e(x, y)$表示从$x$到$y$的路径数。\par
+定义「合法方案」为一种将$A$与$B$完美匹配，然后每一对匹配在$G$上对应
+一条路径，这些路径两两不相交（无公共点）。\par
+那么：
+\[\det(M)=\sum_{(P_1,P_2,\ldots,P_n):A\to B}\text{sgn}(\sigma(P))\]
+
+\subsection{行列式和完美匹配存在性}
+对于图$E$定义如下的 Edmonds 矩阵$A$：
+\[A_{ij}=\begin{cases}
+  x_{ij} & (i,j)\in E\\
+  0      & (i,j)\notin E
+\end{cases}\]
+需要注意，这里的$x_{ij}$是两两不同的变量！\par
+显然，$|A|$是一个多元多项式，且$|A|$的项数也就是完美匹配的数量。
+但这一方法是不甚实用的：要去求这种多元多项式的行列式也只能$\Theta(n^2)$
+来做。不过由 Schwartz-Zippel 定理可知，如果我们把所有变元都带
+以随机值\footnote{这里假设对一个大质数取模。}，那么误判率是很
+小的。

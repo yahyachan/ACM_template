@@ -1,5 +1,11 @@
 \chapter{图论}
 \section{网络流}
-\subsection{最大流}
-\subsubsection{Dinic 算法}
+\subsection{最大流（Dinic 算法）}
 \lstinputlisting{graph/flow/dinic.cpp}
+\subsection{费用流（Primal-Dual 算法）}
+注意，Primal-Dual 算法需要用一个最短路算法来求初始势能（代码中也有
+用注释标明这一点）。最一般的情况（有负权的一般有向图）需要用 SPFA
+（或者 Bellman-Ford）来做初始化，但由于大多数情况下费用流的初始图
+不会有负权边因此这里直接用了 Dijkstra 来做初始化，如果图是 DAG 那
+么可以直接用 DP 来初始化。
+\lstinputlisting{graph/flow/primal_dual.cpp}

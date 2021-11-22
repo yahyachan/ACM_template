@@ -1,0 +1,44 @@
+\chapter{概率论}
+\section{随机游走}
+最一般的随机游走当然是图上高斯消元了，要是是 DAG 就直接 DP。
+但还是有不少特殊情况可以优化的。
+\lstinputlisting{probability/random_walk/loj2542.cpp}
+\subsection{树上随机游走}
+叶子节点的状态可以表示为关于父亲状态的一次函数，往上一路推到
+根上就可。
+\subsection{网格图上的随机游走}
+\subsubsection{直接消元法}
+直接每次只消去与当前活跃的方程相邻的方程。
+\lstinputlisting{probability/random_walk/hdu6994.cpp}
+\subsubsection{主元法}
+只设第一行（或者第一列）的变量，其他变量用这些来做线性表出。\par
+不过需要注意这个方法在可能有零概率转移的情形下复杂度会变高，
+当然好处是可以适用于「类似」网格图的图。
+\subsection{最一般情况（多段，中间可能重复走）}
+（这里假设图强连通）\par
+设$f_{i, j}$表示从$i$走到$j$的期望步数，$p_{i, k}$表示边
+$(i, k)$被走的概率，$g_i$表示从$i$走出去再走回来的期望步
+数。用大写字母表记这些量对应矩阵，而且用$J$表示全$1$矩阵，
+那么转移表示为：
+\[(I - P)F = J - G\]\par
+我们再引入稳态分布$\pi$（一个行向量），使得$\sum_{i=1}^n \pi_{i} = 1$，
+且$\pi P = \pi$。要求$\pi$，只需要注意到$\sum_{i}\pi_i = 1$
+是一个显然成立的方程，然后$\pi P = \pi$也即$\pi(P - I) = 0$
+又给出了$n$个方程，高斯消元解方程即可。由于$\pi$满足如下性质：
+\[\pi_i g_i = 1\]
+所以马上就可以求出$G$。\par
+此时还有另一问题就是$I-P$不满秩。我们将$F$的方程记为$AX=B$，
+强行消元，得到：
+\[
+\begin{bmatrix}
+  1 & 0 & 0 & \ldots & 0 & a_1\\
+  0 & 1 & 0 & \ldots & 0 & a_2\\
+  0 & 0 & 1 & \ldots & 0 & a_3\\
+  \vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+  0 & 0 & 0 & \ldots & 1 & a_{n-1}\\
+  0 & 0 & 0 & \ldots & 0 & 0
+\end{bmatrix}X=B'
+\]
+这时候强行求出方程一组特解$Y$，就有$X_{i,j} = Y_{i,j} - Y_{j,j}$。\par
+这种 useless algorithm 谁出谁傻逼好吧（大嘘）
+\lstinputlisting{probability/random_walk/frank.cpp}

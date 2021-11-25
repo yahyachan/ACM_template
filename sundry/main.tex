@@ -11,6 +11,60 @@
 直接暴力就行。
 \lstinputlisting{sundry/charpoly.cpp}
 
+\section{多项式矩阵的行列式}
+假设矩阵中多项式次数至多为$d$，矩阵行列数为$n$，则下面给出$O((nd)^3)$
+的算法。\par
+我们可以根据多项式系数将我们要求的多项式写作：
+\[\det(M_0+xM_1+\ldots+x^{d}M_d)\]
+上述行列式等价于：
+\[\begin{vmatrix}
+  xI_n & -I_n & 0 & \ldots & \ldots & 0\\
+  0 & xI_n & -I_n & \ldots & \ldots & 0\\
+  \vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+  0 & 0 & 0 & \ldots & xI_n & -I_n\\
+  M_0 & M_1 & M_2 & \ldots & M_{d-1} & M_d
+\end{vmatrix}\]
+首先不妨假设$M_d$满秩，这样我们可以对最后几行做初等行变换来将矩阵化为如下形式：
+$$
+\begin{vmatrix}
+xI_n & -I_n & 0 & \ldots & \ldots & 0\\
+0 & xI_n & -I_n & \ldots & \ldots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+0 & 0 & 0 & \ldots & xI_n & -I_n\\
+M'_0 & M'_1 & M'_2 & \ldots & M'_{d-1} & I_n
+\end{vmatrix}
+$$
+将分块矩阵最后一行加上倒数第二行，得到：
+$$
+\begin{vmatrix}
+xI_n & -I_n & 0 & \ldots & \ldots & 0\\
+0 & xI_n & -I_n & \ldots & \ldots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+0 & 0 & 0 & \ldots & xI_n & -I_n\\
+M'_0 & M'_1 & M'_2 & \ldots & M'_{d-1}+xI_n & 0
+\end{vmatrix}
+$$
+对最后一列做 Laplace 展开，行列式变成：
+$$
+\begin{vmatrix}
+xI_n & -I_n & 0 & \ldots & 0\\
+0 & xI_n & -I_n & \ldots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+M'_0 & M'_1 & M'_2 & \ldots & M'_{d-1}+xI_n
+\end{vmatrix}
+$$
+这样一来，就化出了一个特征多项式的形式，用上一节中算法即可。\par
+如果$M_d$不满秩呢？我们来想一下对其做高斯消元的过程，假设在
+第$i$​列找不到$\ge i$​的行的非$0$​元，这说明目前对应的多项式矩
+阵$M_0+xM_1+\ldots+x^{d}M_d$​​中第$i$​列所有$\ge i$​的行的次
+数都小于$d$​。为了进行进一步操作，我们先要将$<i$​行上第$i$​列的
+次数变成小于$d$​​的，具体来说就是利用对角线上的多项式去消除第$i$
+列。这样操作后第$i$列所有多项式次数都小于$d$了，我们先将第$i$
+列整体乘$x$（最后算答案的时候要除回来），再看能否找到$\ge i$
+的行中次数等于$d$的多项式……若如此反复多次（假设补上的$x$已经
+超过$nd$了那肯定不合理）扔不能找到，那么答案就为$0$​了。
+\lstinputlisting{sundry/poly_det.cpp}
+
 \section{向量集（二进制分组维护动态加点凸包及其上的三分）}
 前半部分是 Andrew 算法求凸包，后半部分是二进制分组维护动态加点凸包。
 \lstinputlisting{sundry/loj2197.cpp}

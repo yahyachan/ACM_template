@@ -27,6 +27,12 @@ MIN-MAX容斥就是说，对于一个集合$S$，其最大值$\max\{S\}$满足�
 立。\par
 这个东西比较套路化了……但是相关推柿子并不容易。
 
+\subsection{广义 MIN-MAX 容斥}
+设有一集合$S$，其中第$k$大值可表示为：
+\[\sum_{T\subseteq S,|T|\ge k}\binom{|T|-1}{k-1}(-1)^{|T|-k}\min(T)\]\par
+如同平凡的 MIN-MAX 容斥一般，广义 MIN-MAX 容斥也是对偶的，将$\max,\min$
+对换仍然成立。
+
 \section{容斥例题}
 \subsection{容斥系数法例题}
 \paragraph{题面}
